@@ -22,7 +22,7 @@ fun Application.module() {
 
         allowHost("client-host", subDomains = listOf("en", "de", "es","pl"))
         allowHost("www.google.com", schemes = listOf("http", "https"))
-        allowHost("localhost:3400", schemes = listOf("http", "https"))
+        allowHost("localhost:4040", schemes = listOf("http", "https"))
     }
     DatabaseFactory.init()
     configureSecurity()
