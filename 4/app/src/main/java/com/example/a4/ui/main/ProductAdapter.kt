@@ -13,10 +13,6 @@ import com.example.a4.models.Product
 class ProductAdapter(private var dataSet: ArrayList<Product>) :
     ListAdapter<Product, ProductAdapter.ViewHolder>(DiffCallback()) {
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
     class ViewHolder(private val binding: TextRowItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) {

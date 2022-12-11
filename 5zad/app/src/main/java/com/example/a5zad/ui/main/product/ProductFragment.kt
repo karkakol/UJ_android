@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.a5zad.R
 import com.example.a5zad.ui.main.PageViewModel
 
@@ -15,7 +17,6 @@ class ProductFragment : Fragment() {
     companion object {
         fun newInstance() = ProductFragment()
     }
-
 
     lateinit var viewModel: PageViewModel
 
@@ -30,7 +31,16 @@ class ProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_product, container, false)
+
+        val recycleView = rootView.findViewById(R.id.productsRV) as RecyclerView
+
+        val adapter = ProductAdapter(viewModel.products, viewModel)
+
+        recycleView.layoutManager = LinearLayoutManager(activity)
+        recycleView.adapter = adapter
+
+        return rootView
     }
 
 

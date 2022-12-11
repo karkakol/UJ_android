@@ -19,30 +19,45 @@ class PageViewModel : ViewModel() {
 
     val products = getProducts()
 
+    var basketLiveList: MutableLiveData<List<BasketProduct>> = MutableLiveData()
     var basketProducts = listOf<BasketProduct>()
+
+    init {
+        basketLiveList.postValue(basketProducts)
+    }
+
 
     fun addProductToBasket(product: Product){
 
        val inBasket = basketProducts.find { el -> el.product.name == product.name }
 
         if(inBasket == null){
-            basketProducts.plus(BasketProduct(1,product))
+            basketProducts = basketProducts.plus(BasketProduct(1,product))
+            basketLiveList.postValue(basketProducts)
         }else{
+
             inBasket.amount +=1
+            basketLiveList.postValue(basketProducts)
         }
     }
 
-    fun removeProductFromBasket(product: Product){
+    //retur true if item was removed
+    fun removeProductFromBasket(product: Product): Boolean{
 
         val inBasket = basketProducts.find { el -> el.product.name == product.name }
 
         if(inBasket != null){
           if(inBasket.amount >1){
               inBasket.amount -= 1
+              basketLiveList.postValue(basketProducts)
+              return false
           }else{
-              basketProducts.minus(inBasket);
+              basketProducts = basketProducts.minus(inBasket)
+              basketLiveList.postValue(basketProducts)
+              return true
           }
         }
+        return false
     }
 
 }
