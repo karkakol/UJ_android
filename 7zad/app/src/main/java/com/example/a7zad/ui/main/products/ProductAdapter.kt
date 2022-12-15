@@ -1,25 +1,15 @@
-package com.example.a5zad.ui.main.product
+package com.example.a7zad.ui.main.products
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.os.Parcel
-import android.os.Parcelable
-import android.os.Parcelable.Creator
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.a5zad.DetailedProductActivity
-import com.example.a5zad.R
-import com.example.a5zad.databinding.ProductListTileBinding
-import com.example.a5zad.model.Product
-import com.example.a5zad.ui.main.PageViewModel
-import com.google.gson.Gson
+import com.example.a7zad.databinding.ProductListTileBinding
+import com.example.a7zad.model.product.Product
 
 
-class ProductAdapter(private var dataSet: List<Product>, private val viewModel: PageViewModel) :
+class ProductAdapter(private var dataSet: List<Product>) :
     RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     private var context: Context? = null
@@ -45,20 +35,21 @@ class ProductAdapter(private var dataSet: List<Product>, private val viewModel: 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val currItem = dataSet[position]
-        viewHolder.itemView.findViewById<Button>(R.id.addProduct).setOnClickListener {
-            viewModel.addProductToBasket(currItem)
-        }
-        viewHolder.itemView.findViewById<LinearLayout>(R.id.productListTile).setOnClickListener {
-            val intent = Intent(context, DetailedProductActivity::class.java)
-            val productJson = Gson().toJson(currItem)
-            intent.putExtra("product", productJson)
-            startActivity(context!!, intent, null)
-        }
+
         viewHolder.bind(currItem)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount(): Int {
+
+        return dataSet.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateProducts(newData: List<Product>) {
+        dataSet = newData
+        notifyDataSetChanged()
+    }
 
 }
 

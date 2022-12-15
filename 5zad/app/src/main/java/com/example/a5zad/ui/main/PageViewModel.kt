@@ -13,10 +13,6 @@ class PageViewModel : ViewModel() {
 
     private val _index = MutableLiveData<Int>()
 
-    fun setIndex(index: Int) {
-        _index.value = index
-    }
-
     val products = getProducts()
 
     var basketLiveList: MutableLiveData<List<BasketProduct>> = MutableLiveData()
@@ -35,7 +31,6 @@ class PageViewModel : ViewModel() {
             basketProducts = basketProducts.plus(BasketProduct(1,product))
             basketLiveList.postValue(basketProducts)
         }else{
-
             inBasket.amount +=1
             basketLiveList.postValue(basketProducts)
         }

@@ -35,8 +35,6 @@ class MainFragment() : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_main, container, false)
 
-
-
         val recycleView = rootView.findViewById(R.id.productsRV) as RecyclerView
 
         val adapter = ProductAdapter(viewModel.displayedProducts)

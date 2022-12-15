@@ -35,7 +35,7 @@ fun Application.configureRouting() {
             val desc = product.desc
             val price = product.price
             val addedProduct = daoProduct.addNewProduct(colorId,name, desc, price)
-            call.respond("added product: $product")
+            call.respond(mapOf("body" to "added product: $product"))
         }
 
         put("/product") {
