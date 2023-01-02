@@ -11,7 +11,7 @@ object Products : Table() {
     val categoryId = reference("categoryId", Categories.id,ReferenceOption.CASCADE, ReferenceOption.CASCADE)
     val name = varchar("title", 128)
     val desc = varchar("desc", 1024)
-    val price = double("price");
+    val price = double("price")
     override val primaryKey = PrimaryKey(id)
 
 

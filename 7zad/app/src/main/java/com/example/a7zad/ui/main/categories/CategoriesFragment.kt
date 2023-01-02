@@ -34,7 +34,6 @@ class CategoriesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val root = inflater.inflate(R.layout.fragment_categories, container, false)
 
         val recycleView = root.findViewById(R.id.basketProductRV) as RecyclerView

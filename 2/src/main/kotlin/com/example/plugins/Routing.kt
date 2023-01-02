@@ -2,8 +2,12 @@ package com.example.plugins
 
 import com.example.databse.category.daoCategory
 import com.example.databse.product.daoProduct
+import com.example.databse.user.daoUser
 import com.example.models.Category
 import com.example.models.Product
+import com.example.models.RegisteredUser
+import com.example.models.User
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -34,7 +38,7 @@ fun Application.configureRouting() {
             val colorId = product.categoryId
             val desc = product.desc
             val price = product.price
-            val addedProduct = daoProduct.addNewProduct(colorId,name, desc, price)
+            val addedProduct = daoProduct.addNewProduct(colorId, name, desc, price)
             call.respond(mapOf("body" to "added product: $product"))
         }
 
@@ -42,9 +46,17 @@ fun Application.configureRouting() {
             val newProduct = call.receive<Product>()
             val oldProduct = daoProduct.product(newProduct.id)
 
-            daoProduct.editProduct(newProduct.id,newProduct.categoryId, newProduct.name, newProduct.desc, newProduct.price)
-            call.respond("product before modification: ${oldProduct.toString()} \n product after modification: " +
-                    newProduct.toString())
+            daoProduct.editProduct(
+                newProduct.id,
+                newProduct.categoryId,
+                newProduct.name,
+                newProduct.desc,
+                newProduct.price
+            )
+            call.respond(
+                "product before modification: ${oldProduct.toString()} \n product after modification: " +
+                        newProduct.toString()
+            )
 
         }
 
@@ -76,12 +88,14 @@ fun Application.configureRouting() {
         }
 
         put("/category") {
-            val newCategory= call.receive<Category>()
+            val newCategory = call.receive<Category>()
             val oldCategory = daoCategory.category(newCategory.id)
 
             daoCategory.editCategory(newCategory.id, newCategory.name, newCategory.desc, newCategory.color)
-            call.respond("category before modification: ${newCategory} \n category after modification: " +
-                    oldCategory.toString())
+            call.respond(
+                "category before modification: ${newCategory} \n category after modification: " +
+                        oldCategory.toString()
+            )
 
         }
 
@@ -90,6 +104,98 @@ fun Application.configureRouting() {
             val category = daoCategory.category(id)
             daoCategory.deleteCategory(id)
             call.respond("Deleted product ${category.toString()}")
+        }
+
+        //Users
+
+        get("/users") {
+            val users = daoUser.allUsers()
+
+            call.respond(mapOf("users" to users))
+        }
+
+        post("/user/login") {
+            val requestData = call.receive<User>()
+            val user = daoUser.login(requestData.login, requestData.password)
+            if (user == null) {
+                call.respondText(
+                    text = "Nie ma takiego usera",
+                    contentType = ContentType.Application.Json,
+                    status = HttpStatusCode.Unauthorized
+                )
+                return@post
+            }
+            call.respond(mapOf("user" to user))
+        }
+
+        post("/user/fromExternalProvider") {
+            val userData = call.receive<User>()
+            val user = daoUser.registerUserFromOtherSource( userData)
+            if (user == null) {
+                call.respondText(
+                    text = "Coś poszło nie tak",
+                    contentType = ContentType.Application.Json,
+                    status = HttpStatusCode.BadRequest
+                )
+                return@post
+            }
+            call.respond(mapOf("user" to user))
+
+        }
+        post("/user/register") {
+            val userData = call.receive<RegisteredUser>()
+
+            if (userData.login.length < 6) {
+                call.respondText(
+                    text = "Za krótki login",
+                    contentType = ContentType.Application.Json,
+                    status = HttpStatusCode.NotAcceptable
+                )
+
+                return@post
+            }
+
+            if (userData.password != userData.repeatedPassword) {
+                call.respondText(
+                    text = "Podane hasła są różne",
+                    contentType = ContentType.Application.Json,
+                    status = HttpStatusCode.NotAcceptable
+                )
+                return@post
+            }
+
+            if (userData.password.length < 6) {
+                call.respondText(
+                    text = "Hasło musi mieć conajmniej 6 zaków",
+                    contentType = ContentType.Application.Json,
+                    status = HttpStatusCode.NotAcceptable
+                )
+                return@post
+            }
+
+            val userWithSameLogin = daoUser.userByLogin(userData.login)
+            if (userWithSameLogin != null) {
+                call.respondText(
+                    text = "Istnieje użytkownik o takim loginie",
+                    contentType = ContentType.Application.Json,
+                    status = HttpStatusCode.NotAcceptable
+                )
+                return@post
+            }
+            val registeredUser = daoUser.register(userData.login, userData.password)
+
+            if (registeredUser == null) {
+                call.respondText(
+                    text = "Coś sie popsuło i nie było mnie słychać",
+                    contentType = ContentType.Application.Json,
+                    status = HttpStatusCode.BadRequest
+                )
+                return@post
+            } else {
+                call.respond(mapOf("user" to registeredUser))
+            }
+
+
         }
     }
 }

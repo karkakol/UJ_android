@@ -19,6 +19,7 @@ object DatabaseFactory {
         transaction(database) {
             SchemaUtils.create(Categories)
             SchemaUtils.create(Products)
+            SchemaUtils.create(Users)
             runBlocking {
                 createInitData()
             }
