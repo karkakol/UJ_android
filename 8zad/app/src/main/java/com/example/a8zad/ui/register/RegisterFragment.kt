@@ -66,14 +66,14 @@ class RegisterFragment : Fragment() {
         val password = passwordEditText.text.toString()
         val repeatedPassword = repeatedPasswordEditText.text.toString()
 
-        val error = registerViewModel.register(login, password, repeatedPassword)
+        val response = registerViewModel.register(login, password, repeatedPassword)
 
 
-        if(error != null){
+        if(!response.isSuccessful){
             progressIndicator.visibility = View.GONE
-            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Coś sie nie udało", Toast.LENGTH_SHORT).show()
         }else{
-            mainViewModel.user = User(login,password,"APP")
+            mainViewModel.user = response.body()!!.user
             Navigation.findNavController(_view).navigate(R.id.navigateToMainScreen)
         }
 

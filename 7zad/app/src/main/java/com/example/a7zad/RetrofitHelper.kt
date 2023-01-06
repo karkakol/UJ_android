@@ -9,7 +9,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object RetrofitHelper {
 
-    val baseUrl = "https://7b40-193-239-37-150.eu.ngrok.io"
+    val baseUrl = "https://f23f-193-239-37-150.eu.ngrok.io"
 
     val gson = GsonBuilder()
         .setLenient()

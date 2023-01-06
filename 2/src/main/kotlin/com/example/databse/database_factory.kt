@@ -20,6 +20,8 @@ object DatabaseFactory {
             SchemaUtils.create(Categories)
             SchemaUtils.create(Products)
             SchemaUtils.create(Users)
+            SchemaUtils.create(Orders)
+            SchemaUtils.create(OrderProducts)
             runBlocking {
                 createInitData()
             }
@@ -35,7 +37,8 @@ object DatabaseFactory {
 
         val d2 = DAOProductFacadeImpl();
         if(d2.allProducts().isEmpty()){
-            d2.addNewProduct(1,"The drive to develop!", "...it's what keeps me going.", 42.69)
+            d2.addNewProduct(1,"Lodówka", "jestem bardzo pojemna -><-", 100.2)
+            d2.addNewProduct(1,"Zmywara", "Wpakujesz  mnie swojebrudne naczyńa", 223.2)
         }
 
     }

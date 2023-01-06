@@ -20,8 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -116,7 +115,7 @@ class LoginFragment : Fragment() {
             if (uri != null && uri.toString().startsWith(githubRedirectURI)) {
                 val code = uri.getQueryParameter("code")
 
-                if(code == null){
+                if (code == null) {
                     displayError("brak kodu do uzyskanie tokena")
                     return
                 }
@@ -127,7 +126,7 @@ class LoginFragment : Fragment() {
                     code = code
                 )
 
-                if(userWrapper.error != null){
+                if (userWrapper.error != null) {
                     displayError(userWrapper.error)
                     return
                 }
@@ -139,8 +138,8 @@ class LoginFragment : Fragment() {
 
     }
 
-    fun displayError(error: String){
-        Toast.makeText(context,error,Toast.LENGTH_SHORT).show()
+    fun displayError(error: String) {
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
 
@@ -155,12 +154,11 @@ class LoginFragment : Fragment() {
                 if (googleAccount != null) {
                     val login = googleAccount.email ?: "Nie ma"
                     val password = "Google nie daje hasła :("
-                    val user = User(login, password, "GOOGLE")
                     val token = googleAccount.idToken!!
 
-                    loginViewModel.registerWithExternalProvider(login, password,token, "GOOGLE")
+                    val response = loginViewModel.registerWithExternalProvider(login, password, token, "GOOGLE")
 
-                    mainViewModel.user = user
+                    mainViewModel.user = response.body()!!.user
                     Navigation.findNavController(_view).navigate(R.id.navigateToMainScreen)
                 }
             } catch (e: ApiException) {
@@ -181,22 +179,26 @@ class LoginFragment : Fragment() {
     }
 
     fun loginViaServer() {
-        progressIndicator.visibility = View.VISIBLE
-        val login = loginEditText.text.toString()
-        val password = passwordEditText.text.toString()
+        GlobalScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                progressIndicator.visibility = View.VISIBLE
+            }
+            val login = loginEditText.text.toString()
+            val password = passwordEditText.text.toString()
 
-        val wrapped = loginViewModel.login(login, password)
-
-
-        if (wrapped.error != null) {
-            progressIndicator.visibility = View.GONE
-            Toast.makeText(context, wrapped.error, Toast.LENGTH_SHORT).show()
-        } else {
-            mainViewModel.user = wrapped.user!!
-            Navigation.findNavController(_view).navigate(R.id.navigateToMainScreen)
+            val wrapped = loginViewModel.login(login, password)
+            withContext(Dispatchers.Main) {
+                if (wrapped.error != null) {
+                    progressIndicator.visibility = View.GONE
+                    Toast.makeText(context, wrapped.error, Toast.LENGTH_SHORT).show()
+                } else {
+                    mainViewModel.user = wrapped.user!!
+                    Navigation.findNavController(_view).navigate(R.id.navigateToMainScreen)
+                }
+                progressIndicator.visibility = View.GONE
+            }
         }
 
-        progressIndicator.visibility = View.GONE
     }
 
 

@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 
 object RetrofitHelper {
-    val _baseUrl = "https://99b5-193-239-37-150.eu.ngrok.io"
+    val _baseUrl = "https://9734-193-239-37-150.eu.ngrok.io"
 
     val gson = GsonBuilder()
         .setLenient()
@@ -22,8 +22,8 @@ object RetrofitHelper {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
         val okHttpClient = OkHttpClient.Builder()
-            .addNetworkInterceptor(interceptor) // same for .addInterceptor(...)
-            .connectTimeout(30, TimeUnit.SECONDS) //Backend is really slow
+            .addNetworkInterceptor(interceptor) //
+            .connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build()
