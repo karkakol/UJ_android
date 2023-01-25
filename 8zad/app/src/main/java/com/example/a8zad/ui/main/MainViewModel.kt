@@ -19,27 +19,27 @@ import kotlinx.coroutines.NonDisposableHandle.parent
 import java.time.LocalDateTime
 
 class MainViewModel : ViewModel() {
-    val api = RetrofitHelper.getInstance(null).create(Api::class.java)
+
+    var api = RetrofitHelper.getInstance(null).create(Api::class.java)
     lateinit var user: User
     var productsLiveList: MutableLiveData<List<Product>> = MutableLiveData()
     var basketLiveList: MutableLiveData<List<BasketProduct>> = MutableLiveData()
     var ordersLiveList: MutableLiveData<List<Order>> = MutableLiveData()
     var basketProducts = listOf<BasketProduct>()
 
-    init {
-        basketLiveList.postValue(basketProducts)
+    @OptIn(DelicateCoroutinesApi::class)
+    fun downloadProducts() {
         GlobalScope.launch(Dispatchers.IO) {
             val response = api.getProducts()
 
             if (response.isSuccessful) {
                 val _products = response.body()!!.products
                 productsLiveList.postValue(_products)
-            } else {
-
             }
         }
 
     }
+
 
     fun getAllOrders() {
         GlobalScope.launch(Dispatchers.IO) {
@@ -55,7 +55,7 @@ class MainViewModel : ViewModel() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun createOrder(): String? {
         val products = basketLiveList.value
-        if (products == null || products.size == 0) {
+        if (products == null || products.isEmpty()) {
             return null
         }
         val request = UserProducts(
@@ -128,6 +128,4 @@ class MainViewModel : ViewModel() {
             }
         }
     }
-
-
 }

@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 
 object RetrofitHelper {
-    val _baseUrl = "https://9734-193-239-37-150.eu.ngrok.io"
+    val _baseUrl = "https://bb1e-193-239-37-150.eu.ngrok.io "
 
     val gson = GsonBuilder()
         .setLenient()

@@ -1,24 +1,23 @@
 package com.example.a8zad.ui.login
 
 import androidx.lifecycle.ViewModel
-import com.example.a8zad.Api
-import com.example.a8zad.AuthGithubApi
-import com.example.a8zad.GithubApi
-import com.example.a8zad.RetrofitHelper
+import com.example.a8zad.*
 import com.example.a8zad.data.model.User
 import com.example.a8zad.data.model.api.ApiUserWrapper
 import com.example.a8zad.data.model.api.login.LoginRequest
 import com.example.a8zad.data.model.api.registerFromExternalProvider.RegisterFromExternalProviderRequest
 import com.example.a8zad.data.model.api.registerFromExternalProvider.RegisterFromExternalProviderResponse
+import com.example.a8zad.utils.EmailValidator
 import kotlinx.coroutines.*
 import retrofit2.Response
-import retrofit2.create
 
-class LoginViewModel() : ViewModel() {
+class LoginViewModel : ViewModel() {
     val api = RetrofitHelper.getInstance(null).create(Api::class.java)
     val githubApi = RetrofitHelper.getInstance("https://github.com/").create(GithubApi::class.java)
     val authGithubApi =
         RetrofitHelper.getInstance("https://api.github.com/").create(AuthGithubApi::class.java)
+
+
 
     @OptIn(DelicateCoroutinesApi::class)
     fun login(login: String, password: String): ApiUserWrapper {
@@ -114,5 +113,36 @@ class LoginViewModel() : ViewModel() {
             }.await()
         }
         return response
+    }
+
+    fun validateFields(email: String, password: String): Int?{
+        if(isEmpty(email))
+            return R.string.empty_login
+
+        if(isEmpty(password))
+            return R.string.empty_password
+
+        if(lengthLessThan5(email))
+            return R.string.login_too_short
+
+        if(lengthLessThan5(password))
+            return R.string.password_too_short
+
+        if(isEmailInValid(email))
+            return R.string.email_not_valid
+
+        return null
+    }
+
+    private fun isEmpty(text: String): Boolean{
+        return text.isEmpty()
+    }
+
+    private fun lengthLessThan5(text: String): Boolean{
+        return text.length < 5
+    }
+
+    fun isEmailInValid(email: String): Boolean {
+        return !EmailValidator.validate(email)
     }
 }

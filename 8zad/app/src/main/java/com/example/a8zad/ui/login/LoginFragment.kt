@@ -138,11 +138,6 @@ class LoginFragment : Fragment() {
 
     }
 
-    fun displayError(error: String) {
-        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
-    }
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1000) {
@@ -179,12 +174,21 @@ class LoginFragment : Fragment() {
     }
 
     fun loginViaServer() {
+        val login = loginEditText.text.toString()
+        val password = passwordEditText.text.toString()
+
+        val errorId = loginViewModel.validateFields(email = login, password=password)
+
+        if(errorId != null){
+            displayError(getString(errorId))
+            return
+        }
+
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 progressIndicator.visibility = View.VISIBLE
             }
-            val login = loginEditText.text.toString()
-            val password = passwordEditText.text.toString()
+
 
             val wrapped = loginViewModel.login(login, password)
             withContext(Dispatchers.Main) {
@@ -198,8 +202,9 @@ class LoginFragment : Fragment() {
                 progressIndicator.visibility = View.GONE
             }
         }
-
     }
 
-
+    fun displayError(error: String) {
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+    }
 }

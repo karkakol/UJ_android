@@ -8,11 +8,6 @@ import javax.crypto.spec.SecretKeySpec
 
 object HashGenerationUtils {
 
-    /*
-Do not use this, you may use this only for testing.
-This should be done from server side..
-Do not keep salt anywhere in app.
-*/
     fun generateHashFromSDK(
         hashData: String,
         salt: String?,
@@ -26,11 +21,6 @@ Do not keep salt anywhere in app.
         return  calculateHmacSha256(hashString,salt)
     }
 
-    /**
-     * Function to calculate the SHA-512 hash
-     * @param hashString hash string for hash calculation
-     * @return Post Data containig the
-     * */
     private fun calculateHash(hashString: String): String {
         val messageDigest =
             MessageDigest.getInstance("SHA-512")

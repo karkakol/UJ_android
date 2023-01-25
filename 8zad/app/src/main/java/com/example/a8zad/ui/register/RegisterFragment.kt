@@ -61,10 +61,18 @@ class RegisterFragment : Fragment() {
     }
 
     fun register(){
-        progressIndicator.visibility = View.VISIBLE
         val login = loginEditText.text.toString()
         val password = passwordEditText.text.toString()
         val repeatedPassword = repeatedPasswordEditText.text.toString()
+
+        val resId = registerViewModel.validateFields(email = login, password = password, repeatedPassword = repeatedPassword);
+        if(resId != null){
+            displayError(getString(id))
+            return
+        }
+
+        progressIndicator.visibility = View.VISIBLE
+
 
         val response = registerViewModel.register(login, password, repeatedPassword)
 
@@ -78,6 +86,10 @@ class RegisterFragment : Fragment() {
         }
 
         progressIndicator.visibility = View.GONE
+    }
+
+    fun displayError(error: String) {
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
 }

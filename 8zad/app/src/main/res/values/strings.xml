@@ -9,10 +9,20 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="empty_login">Login cannot be empty</string>
+    <string name="empty_password">Password cannot be empty</string>
+    <string name="repeated_empty_password">Repeated password cannot be empty</string>
+    <string name="different_passwords">Passwords are not equal</string>
+    <string name="login_too_short">Login must have at least 5 letters</string>
+    <string name="password_too_short">Password must have at least 5 letters</string>
+    <string name="repeated_password_too_short">Repeated password must have at least 5 letters</string>
+    <string name="email_not_valid">Given email is not valid </string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

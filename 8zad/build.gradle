@@ -5,3 +5,18 @@ plugins {
     id 'com.android.library' version '7.3.0' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
 }
+
+
+ext {
+    buildToolsVersion = "32.0.0"
+    androidxAnnotationVersion = "1.5.0"
+    androidxCoreVersion = "1.9.0"
+    coreVersion = "1.5.0"
+    extJUnitVersion = "1.1.5"
+    runnerVersion = "1.5.2"
+    rulesVersion = "1.5.0"
+    espressoVersion = "3.5.1"
+    extJUnitVersion = "1.1.5"
+    extTruthVersion = "1.5.0"
+    robolectricVersion = "4.9"
+}

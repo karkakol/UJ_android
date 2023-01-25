@@ -32,6 +32,7 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+        viewModel.downloadProducts()
 //        googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
 //        googleSignInClient = GoogleSignIn.getClient(requireActivity(),googleSignInOptions)
     }

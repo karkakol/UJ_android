@@ -35,7 +35,7 @@ interface Api {
     @POST("/order/create")
     suspend fun createOrder(@Body userProduct: UserProducts): Response<Order>
 
-    @POST("/payment-sheet")
+    @POST("/stripe-payment-sheet")
     suspend fun setupPayment(@Body userProduct: UserProducts): Response<Map<String,String>>
 }
 

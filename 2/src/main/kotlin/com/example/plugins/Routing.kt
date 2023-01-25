@@ -225,7 +225,7 @@ fun Application.configureRouting() {
             call.respond(mapOf("order" to daoOrder.orderById(orderId)))
         }
 
-        post("/payment-sheet"){
+        post("/stripe-payment-sheet"){
             val requestData = call.receive<UserProducts>()
             var sum = 0.0
             requestData.countedProducts.forEach {
@@ -267,6 +267,10 @@ fun Application.configureRouting() {
                 "pk_test_51MMErnAfaFir4cbYJK8rOHFKwnjhhRd8GMn2Dl1frKBevM0JBA58kIat0ahIr3W3faMX9boMHmuXNzwF9RklkYEk00Y20m7pk3"
 
             call.respond(responseData)
+        }
+
+        post("/payu-payment-sheet"){
+            val requestData = call.parameters[""]
         }
     }
 }

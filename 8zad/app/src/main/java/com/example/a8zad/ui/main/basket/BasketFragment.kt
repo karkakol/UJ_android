@@ -126,7 +126,7 @@ class BasketFragment : Fragment() {
             .setFirstName("John")
             .setEmail("john@yopmail.com")
             .setPhone("7903376251")
-            .setSurl("https://payuresponse.firebaseapp.com/success")
+            .setSurl("https://webhook.site/b86a8f18-d902-4f12-aa25-09a7fe598744")
                 .setFurl("https://payuresponse.firebaseapp.com/failure")
                 .build()
 
@@ -139,7 +139,7 @@ class BasketFragment : Fragment() {
                     response as HashMap<*, *>
                     val payUResponse = response[PayUCheckoutProConstants.CP_PAYU_RESPONSE]
                     val merchantResponse = response[PayUCheckoutProConstants.CP_MERCHANT_RESPONSE]
-                    Toast.makeText(requireContext(), "onPaymentSuccess", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Płatność powiodła się", Toast.LENGTH_LONG).show()
 
                 }
 
@@ -148,13 +148,13 @@ class BasketFragment : Fragment() {
                     response as HashMap<*, *>
                     val payUResponse = response[PayUCheckoutProConstants.CP_PAYU_RESPONSE]
                     val merchantResponse = response[PayUCheckoutProConstants.CP_MERCHANT_RESPONSE]
-                    Toast.makeText(requireContext(), "onPaymentFailure", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Płatność nie powiodła się", Toast.LENGTH_LONG).show()
 
                 }
 
 
                 override fun onPaymentCancel(isTxnInitiated:Boolean) {
-                    Toast.makeText(requireContext(), "onPaymentCancel", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Płatność anulowana", Toast.LENGTH_LONG).show()
 
                 }
 
