@@ -3,11 +3,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.example.a8zad.data.model.User
 import com.example.a8zad.data.model.api.order.AllOrdersResponse
-import com.example.a8zad.data.model.api.products_response.ProductResponse
+import com.example.a8zad.data.model.api.products_response.ProductsResponse
 import com.example.a8zad.data.model.order.Order
 import com.example.a8zad.data.model.product.Product
 import com.example.a8zad.ui.main.MainViewModel
-import com.google.common.net.MediaType
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -30,7 +29,7 @@ class MainViewModelTests {
             Product(2, 2, "P2", "D2", 20.0),
             Product(3, 3, "P3", "D3", 30.0)
         )
-        val productResponse = ProductResponse(products)
+        val productResponse = ProductsResponse(products)
 
         val orders = listOf(
             Order(1,1,"1", 100.111),
@@ -53,7 +52,7 @@ class MainViewModelTests {
         viewModel.basketProducts = listOf()
     }
 
-    suspend fun productResponse(): Response<ProductResponse>{
+    suspend fun productResponse(): Response<ProductsResponse>{
         return Response.success(productResponse)
     }
 

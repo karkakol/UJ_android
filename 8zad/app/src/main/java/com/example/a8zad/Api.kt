@@ -6,11 +6,12 @@ import com.example.a8zad.data.model.api.GithubUser
 import com.example.a8zad.data.model.api.login.LoginRequest
 import com.example.a8zad.data.model.api.login.LoginResponse
 import com.example.a8zad.data.model.api.order.AllOrdersResponse
+import com.example.a8zad.data.model.api.product_response.ProductResponse
 import com.example.a8zad.data.model.api.register.RegisterRequest
 import com.example.a8zad.data.model.api.register.RegisterResponse
 import com.example.a8zad.data.model.api.registerFromExternalProvider.RegisterFromExternalProviderRequest
 import com.example.a8zad.data.model.api.registerFromExternalProvider.RegisterFromExternalProviderResponse
-import com.example.a8zad.data.model.api.products_response.ProductResponse
+import com.example.a8zad.data.model.api.products_response.ProductsResponse
 import com.example.a8zad.data.model.order.Order
 import com.example.a8zad.data.model.product.UserProducts
 import retrofit2.Response
@@ -27,7 +28,13 @@ interface Api {
     suspend fun registerFromExternalProvider(@Body registerRequest: RegisterFromExternalProviderRequest) : Response<RegisterFromExternalProviderResponse>
 
     @GET("/products")
-    suspend fun getProducts() : Response<ProductResponse>
+    suspend fun getProducts() : Response<ProductsResponse>
+
+    @GET("/discount")
+    suspend fun getDiscount(): Response<ProductResponse>
+
+    @GET("/discount/{text}")
+    suspend fun getDiscount(@Path("text") text: String): Response<String>
 
     @GET("/orders/{userId}")
     suspend fun getOrders(@Path("userId") userID: Int) : Response<AllOrdersResponse>

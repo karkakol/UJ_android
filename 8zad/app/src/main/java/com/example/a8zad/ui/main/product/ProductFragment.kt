@@ -9,7 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a8zad.R
+import com.example.a8zad.notification.AppNotification
 import com.example.a8zad.ui.main.MainViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class ProductFragment : Fragment() {
@@ -23,6 +26,15 @@ class ProductFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        AppNotification.createSimpleNotification(requireContext())
+        GlobalScope.launch {
+            val product = viewModel.getDiscountedProduct()
+            if(product != null){
+                AppNotification.createImportantNotification(requireContext(), product)
+            }
+
+        }
+
 
     }
 
@@ -46,6 +58,5 @@ class ProductFragment : Fragment() {
 
         return rootView
     }
-
 
 }

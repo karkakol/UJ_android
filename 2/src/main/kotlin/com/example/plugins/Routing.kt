@@ -269,9 +269,22 @@ fun Application.configureRouting() {
             call.respond(responseData)
         }
 
-        post("/payu-payment-sheet"){
-            val requestData = call.parameters[""]
+        get("/discount"){
+            val discountedProduct = daoProduct.allProducts().random()
+            call.respond(mapOf("product" to discountedProduct))
         }
+
+        get("/discount/{text}"){
+            val text = call.parameters.getOrFail<String>("text")
+            var serverResponse = ""
+            if(text.lowercase() == "tak"){
+                serverResponse = "Masz zniżke"
+            }else{
+                serverResponse = "Skopciłeś i nie masz zniżki"
+            }
+            call.respond(serverResponse)
+        }
+
     }
 }
 

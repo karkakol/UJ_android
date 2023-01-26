@@ -1,8 +1,6 @@
 package com.example.a8zad.ui.main
 
-import android.app.Application
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,9 +11,8 @@ import com.example.a8zad.data.model.order.Order
 import com.example.a8zad.data.model.product.BasketProduct
 import com.example.a8zad.data.model.product.Product
 import com.example.a8zad.data.model.product.UserProducts
-import retrofit2.Response
 import kotlinx.coroutines.*
-import kotlinx.coroutines.NonDisposableHandle.parent
+import retrofit2.Response
 import java.time.LocalDateTime
 
 class MainViewModel : ViewModel() {
@@ -37,7 +34,20 @@ class MainViewModel : ViewModel() {
                 productsLiveList.postValue(_products)
             }
         }
+    }
 
+    suspend fun getDiscountedProduct(): Product? {
+        var product: Product? = null
+
+        withContext(Dispatchers.IO) {
+            val response = api.getDiscount()
+
+            if (response.isSuccessful) {
+                product = response.body()!!.product
+            }
+        }
+
+        return product
     }
 
 

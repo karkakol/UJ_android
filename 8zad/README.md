@@ -19,3 +19,6 @@ zadanie na ocene 5
 link do wyników testów:
 https://app-automate.browserstack.com/dashboard/v2/builds/7cc619134f04bdb275c8ab8f75d2dd4495029c7a
 https://app-automate.browserstack.com/dashboard/v2/builds/d3c836a0aca9b2c82c25e66aa98909fda07bf6ee
+
+zadanie 11
+jeżeli odpowie sie tak w notyfikacji to serwer zwraca informacja o przyznanej zniżce, jeżeli odpowie sie inaczej serwer zwraca informacje że zniżka nie została przyznana
